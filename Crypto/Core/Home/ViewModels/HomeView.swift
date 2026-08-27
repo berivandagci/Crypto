@@ -8,45 +8,58 @@
 import SwiftUI
 
 struct HomeView: View {
-    @State private var showPortfoilo : Bool = false
+    @State private var showPortfoilo: Bool = false
+    
     var body: some View {
-        ZStack{
-            //background layer
+        ZStack {
+            // background layer
             Color.theme.background
                 .ignoresSafeArea()
             
             // content layer
-            VStack{
-                HStack{
-                    CircleButtonView(iconName: showPortfoilo ? "plus" : "info")
-                    animation(nil, value: showPortfoilo);                    Spacer()
-
-                    Text(showPortfoilo ? "Porfolio" : "Live Prices")
-                        .font(.headline)
-                        .fontWeight(.heavy)
-                        .foregroundColor(Color.theme.accent)
-                    animation(nil, value: showPortfoilo)
-                    Spacer()
-
-                    CircleButtonView(iconName: "chevron.right")
-                        .rotationEffect(Angle(degrees: showPortfoilo ? 180 : 0))
-                        .onTapGesture {
-                            withAnimation(.spring()) {
-                                showPortfoilo.toggle()
-                            }
-                        }
-                }
-                .padding(.horizontal)
+            VStack {
+                homeHeader // Başlığı buraya dahil ettik
+                
                 Spacer(minLength: 0)
             }
-            
-        }    }
+        }
+    }
 }
 
 #Preview {
-    NavigationView{
+    NavigationView {
         HomeView()
             .navigationBarHidden(true)
+    }
+}
 
+extension HomeView {
+    private var homeHeader: some View {
+        HStack {
+            CircleButtonView(iconName: showPortfoilo ? "plus" : "info")
+                .background(
+                    CircleButtonAnimationView(animate: $showPortfoilo)
+                )
+                .animation(nil, value: showPortfoilo)
+            
+            Spacer()
+
+            Text(showPortfoilo ? "Portfolio" : "Live Prices")
+                .font(.headline)
+                .fontWeight(.heavy)
+                .foregroundColor(Color.theme.accent)
+                .animation(nil, value: showPortfoilo)
+            
+            Spacer()
+
+            CircleButtonView(iconName: "chevron.right")
+                .rotationEffect(Angle(degrees: showPortfoilo ? 180 : 0))
+                .onTapGesture {
+                    withAnimation(.spring()) {
+                        showPortfoilo.toggle()
+                    }
+                }
+        }
+        .padding(.horizontal)
     }
 }
