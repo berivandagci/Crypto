@@ -1,7 +1,6 @@
 import Foundation
 import SwiftUI
 
-// 🔥 Bunu en üste veya en alta ekleyerek global yapıyoruz:
 let dev = DeveloperPreview.instance
 
 class DeveloperPreview {

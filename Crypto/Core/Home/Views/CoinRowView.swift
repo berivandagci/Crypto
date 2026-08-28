@@ -9,20 +9,17 @@ import SwiftUI
 
 struct CoinRowView: View {
     let coin: CoinModel
-    let showHoldingsColumn: Bool // Portföy sütunu gösterilsin mi?
+    let showHoldingsColumn: Bool
     
     var body: some View {
         HStack(spacing: 0) {
             leftColumn
             
-            Spacer()
+            Spacer(minLength: 10)
             
             if showHoldingsColumn {
                 centerColumn
-            }
-            
-            if showHoldingsColumn {
-                Spacer()
+                Spacer(minLength: 10)
             }
             
             rightColumn
@@ -38,13 +35,12 @@ struct CoinRowView: View {
 
 extension CoinRowView {
     
-    // 1. Sol Taraf: Sıralama, Logo ve Sembol
     private var leftColumn: some View {
-        HStack(spacing: 0) {
+        HStack(spacing: 6) {
             Text("\(coin.rank)")
                 .font(.caption)
                 .foregroundColor(Color.theme.secondaryText)
-                .frame(minWidth: 30)
+                .frame(minWidth: 25, alignment: .leading)
             
             Circle()
                 .frame(width: 30, height: 30)
@@ -52,36 +48,48 @@ extension CoinRowView {
             
             Text(coin.symbol?.uppercased() ?? "")
                 .font(.headline)
-                .padding(.leading, 6)
                 .foregroundColor(Color.theme.accent)
         }
     }
     
-    // 2. Orta Taraf: Portföy Değeri ve Miktarı
     private var centerColumn: some View {
-        VStack(alignment: .trailing) {
+        VStack(alignment: .trailing, spacing: 2) {
             Text((coin.currentHoldingsValue).asCurrencyWith6Decimals())
                 .font(.headline)
+                .foregroundColor(Color.theme.accent)
             
             Text((coin.currentHoldings ?? 0).asNumberString())
                 .font(.caption)
+                .foregroundColor(Color.theme.accent)
         }
-        .foregroundColor(Color.theme.accent)
     }
     
-    // 3. Sağ Taraf: Fiyat ve 24 Saatlik Değişim Oranı
     private var rightColumn: some View {
-        VStack(alignment: .trailing) {
-            Text((coin.currentPrice ?? 0).asCurrencyWith6Decimals())
-                .font(.headline)
-                .foregroundColor(Color.theme.accent)
-            
-            Text((coin.priceChangePercentage24H ?? 0).asPercentString())
-                .font(.caption)
-                .foregroundColor(
-                    (coin.priceChangePercentage24H ?? 0) >= 0 ? Color.theme.green : Color.theme.red
-                )
+            VStack(alignment: .trailing, spacing: 2) {
+                Text((coin.currentPrice ?? 0).asCurrencyWith6Decimals())
+                    .font(.headline)
+                    .foregroundColor(Color.theme.accent)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.8)
+                
+                // Pozitifler için başına "+" ekleyen yapı
+                Text(formattedPercentString(for: coin.priceChangePercentage24H ?? 0))
+                    .font(.caption)
+                    .bold()
+                    .foregroundColor(
+                        (coin.priceChangePercentage24H ?? 0) >= 0 ? Color.theme.green : Color.theme.red
+                    )
+            }
         }
-        .frame(width: UIScreen.main.bounds.width / 3.5, alignment: .trailing)
+        
+        
+        private func formattedPercentString(for value: Double) -> String {
+            let formatted = String(format: "%.2f", value)
+            if value > 0 {
+                return "+\(formatted)% "
+            } else {
+                return "\(formatted)% "
+            }
+        }
     }
-}
+

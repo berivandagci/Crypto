@@ -1,17 +1,10 @@
-//
-//  HomeViewModel.swift
-//  Crypto
-//
-//  Created by beri on 28.08.2026.
-//
-
 import Foundation
 import Combine
 
 class HomeViewModel: ObservableObject {
     
     @Published var allCoins: [CoinModel] = []
-    @Published var portofolioCoins: [CoinModel] = []
+    @Published var portfolioCoins: [CoinModel] = []
     
     private let dataService = CoinDataService()
     var cancellables = Set<AnyCancellable>()

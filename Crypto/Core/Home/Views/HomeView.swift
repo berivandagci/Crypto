@@ -1,16 +1,9 @@
-//
-//  HomeView.swift
-//  Crypto
-//
-//  Created by beri on 20.08.2026.
-//
-
 import SwiftUI
 
 struct HomeView: View {
     @EnvironmentObject private var vm: HomeViewModel
 
-    @State private var showPortfoilo: Bool = false
+    @State private var showPortfolio: Bool = false
     
     var body: some View {
         ZStack {
@@ -19,14 +12,14 @@ struct HomeView: View {
              
             VStack {
                 homeHeader
-                columnTitles // Burası artık doğru yerde!
-           
-                if !showPortfoilo {
+                columnTitles
+             
+                if !showPortfolio {
                     allCoinsList
                         .transition(.move(edge: .leading))
                 }
                  
-                if showPortfoilo {
+                if showPortfolio {
                     portfolioCoinsList
                         .transition(.move(edge: .trailing))
                 }
@@ -40,39 +33,38 @@ struct HomeView: View {
 extension HomeView {
     private var homeHeader: some View {
         HStack {
-            CircleButtonView(iconName: showPortfoilo ? "plus" : "info")
+            CircleButtonView(iconName: showPortfolio ? "plus" : "info")
                 .background(
-                    CircleButtonAnimationView(animate: $showPortfoilo)
+                    CircleButtonAnimationView(animate: $showPortfolio)
                 )
-                .animation(nil, value: showPortfoilo)
+                .animation(nil, value: showPortfolio)
              
             Spacer()
 
-            Text(showPortfoilo ? "Portfolio" : "Live Prices")
+            Text(showPortfolio ? "Portfolio" : "Live Prices")
                 .font(.headline)
                 .fontWeight(.heavy)
                 .foregroundColor(Color.theme.accent)
-                .animation(nil, value: showPortfoilo)
+                .animation(nil, value: showPortfolio)
              
             Spacer()
 
             CircleButtonView(iconName: "chevron.right")
-                .rotationEffect(Angle(degrees: showPortfoilo ? 180 : 0))
+                .rotationEffect(Angle(degrees: showPortfolio ? 180 : 0))
                 .onTapGesture {
                     withAnimation(.spring()) {
-                        showPortfoilo.toggle()
+                        showPortfolio.toggle()
                     }
                 }
         }
         .padding(.horizontal)
     }
 
-    // 🔥 columnTitles buraya, extension HomeView içine taşındı:
     private var columnTitles: some View {
         HStack {
             Text("Coin")
             Spacer()
-            if showPortfoilo {
+            if showPortfolio {
                 Text("Holdings")
             }
             Text("Price")
@@ -95,7 +87,7 @@ extension HomeView {
 
     private var portfolioCoinsList: some View {
         List {
-            ForEach(vm.portofolioCoins) { coin in
+            ForEach(vm.portfolioCoins) { coin in
                 CoinRowView(coin: coin, showHoldingsColumn: true)
                     .listRowInsets(.init(top: 10, leading: 0, bottom: 10, trailing: 10))
             }
@@ -104,7 +96,6 @@ extension HomeView {
     }
 }
 
-// Önizleme (Preview) Kısmı - Artık tertemiz!
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {

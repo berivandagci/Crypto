@@ -7,14 +7,14 @@
 import SwiftUI
 import Foundation
 
-extension Color{
+extension Color {
     static let theme = ColorTheme()
 }
-struct ColorTheme{
+
+struct ColorTheme {
     let accent = Color("AccentColor")
     let background = Color("BackgroundColor")
-    let green = Color("GreenColor")
-    let red = Color("RedColor")
+    let green = Color("CustomGreen") // Asset'teki gerçek isim
+    let red = Color("CustomRed")     // Asset'teki gerçek isim
     let secondaryText = Color("SecondaryTextColor")
-    
 }
