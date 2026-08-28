@@ -1,25 +1,15 @@
-//
-//  PreviewProvider.swift
-//  Crypto
-//
-//  Created by beri on 27.08.2026.
-//
-
 import Foundation
 import SwiftUI
 
-extension PreviewProvider {
-    static var dev: DeveloperPreview {
-        return DeveloperPreview.instance
-    }
-}
+// 🔥 Bunu en üste veya en alta ekleyerek global yapıyoruz:
+let dev = DeveloperPreview.instance
 
 class DeveloperPreview {
     static let instance = DeveloperPreview()
     
     private init() {}
+    let homeVM = HomeViewModel()
     
-    // Önizlemelerde kullanmak üzere örnek bir Bitcoin modeli oluşturuyoruz
     let coin = CoinModel(
         id: "bitcoin",
         symbol: "btc",
@@ -48,6 +38,6 @@ class DeveloperPreview {
         lastUpdated: "2026-08-27T14:32:30.000Z",
         sparklineIn7D: SparklineIn7D(price: [71618.6, 71748.9, 72000.0, 71500.0, 73000.0]),
         priceChangePercentage24HInCurrency: 2.14882,
-        currentHoldings: 2.5 // Örneğin cüzdanımızda 2.5 adet Bitcoin var varsayalım
+        currentHoldings: 2.5
     )
 }
