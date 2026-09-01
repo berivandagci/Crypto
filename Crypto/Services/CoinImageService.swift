@@ -1,10 +1,3 @@
-//
-//  CoinImageService.swift
-//  Crypto
-//
-//  Created by beri on 1.09.2026.
-//
-
 import Foundation
 import SwiftUI
 import Combine
@@ -13,15 +6,27 @@ class CoinImageService {
     
     @Published var image: UIImage? = nil
     var imageSubscription: AnyCancellable?
-    private let urlString: String
+    private let coin: CoinModel
+    private let fileManager = LocalFileManager.instance
+    private let folderName = "coin_images"
+    private let imageName: String
     
-    init(urlString: String) {
-        self.urlString = urlString
+    init(coin: CoinModel) {
+        self.coin = coin
+        self.imageName = coin.id ?? <#default value#>
         getCoinImage()
     }
     
     private func getCoinImage() {
-        guard let url = URL(string: urlString) else { return }
+        if let savedImage = fileManager.getImage(imageName: imageName, folderName: folderName) {
+            image = savedImage
+        } else {
+            downloadCoinImage()
+        }
+    }
+    
+    private func downloadCoinImage() {
+        guard let urlString = coin.image, let url = URL(string: urlString) else { return }
         
         imageSubscription = NetworkingManager.download(url: url)
             .tryMap({ (data) -> UIImage? in
@@ -32,6 +37,7 @@ class CoinImageService {
                 guard let self = self, let downloadedImage = returnedImage else { return }
                 self.image = downloadedImage
                 self.imageSubscription?.cancel()
+                self.fileManager.saveImage(image: downloadedImage, folderName: self.folderName, imageName: self.imageName)
             })
     }
 }
