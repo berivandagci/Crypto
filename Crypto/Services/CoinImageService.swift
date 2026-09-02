@@ -1,3 +1,10 @@
+//
+//  CoinImageService.swift
+//  Crypto
+//
+//  Created by beri on 1.09.2026.
+//
+
 import Foundation
 import SwiftUI
 import Combine
@@ -13,7 +20,7 @@ class CoinImageService {
     
     init(coin: CoinModel) {
         self.coin = coin
-        self.imageName = coin.id ?? <#default value#>
+        self.imageName = coin.id ?? ""
         getCoinImage()
     }
     
