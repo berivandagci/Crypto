@@ -130,4 +130,6 @@ class HomeViewModel: ObservableObject {
         
         return stats
     }
+    func updatePortfolio(coin: CoinModel, amount: Double) {
+        }
 }
