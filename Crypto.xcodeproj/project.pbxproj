@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		C1B2BCD7304AECA6006278A9 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C1B2BCD6304AECA6006278A9 /* CoreData.framework */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		C16F931E3035D40C00B1FCB3 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -27,6 +31,8 @@
 		C16F93103035D40B00B1FCB3 /* Crypto.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Crypto.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C16F931D3035D40C00B1FCB3 /* CryptoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CryptoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C16F93273035D40C00B1FCB3 /* CryptoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CryptoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C1B2BCD6304AECA6006278A9 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		C1B2BCD8304AECB0006278A9 /* libswiftCoreData.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libswiftCoreData.tbd; path = usr/lib/swift/libswiftCoreData.tbd; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -52,6 +58,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C1B2BCD7304AECA6006278A9 /* CoreData.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +85,7 @@
 				C16F93123035D40B00B1FCB3 /* Crypto */,
 				C16F93203035D40C00B1FCB3 /* CryptoTests */,
 				C16F932A3035D40C00B1FCB3 /* CryptoUITests */,
+				C1B2BCD5304AECA6006278A9 /* Frameworks */,
 				C16F93113035D40B00B1FCB3 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -90,6 +98,15 @@
 				C16F93273035D40C00B1FCB3 /* CryptoUITests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		C1B2BCD5304AECA6006278A9 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C1B2BCD8304AECB0006278A9 /* libswiftCoreData.tbd */,
+				C1B2BCD6304AECA6006278A9 /* CoreData.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
