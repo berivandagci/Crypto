@@ -5,6 +5,8 @@ struct HomeView: View {
 
     @State private var showPortfolio: Bool = false
     @State private var showPortfolioView: Bool = false
+    @State private var selectedCoin: CoinModel? = nil
+    @State private var showDetailView: Bool = false
     
     var body: some View {
         ZStack {
@@ -37,6 +39,13 @@ struct HomeView: View {
                 Spacer(minLength: 0)
             }
         }
+        .background(
+            NavigationLink(
+                destination: DetailLoadingView(coin: $selectedCoin),
+                isActive: $showDetailView,
+                label: { EmptyView() }
+            )
+        )
     }
 }
 
@@ -89,9 +98,9 @@ extension HomeView {
                     vm.sortOption = (vm.sortOption == .rank) ? .rankReversed : .rank
                 }
             }
-            
+             
             Spacer()
-            
+             
             if showPortfolio {
                 HStack(spacing: 4) {
                     Text("Holdings")
@@ -105,7 +114,7 @@ extension HomeView {
                     }
                 }
             }
-            
+             
             HStack(spacing: 4) {
                 Image(systemName: "chevron.down")
                     .opacity((vm.sortOption == .price || vm.sortOption == .priceReversed) ? 1.0 : 0.0)
@@ -118,7 +127,7 @@ extension HomeView {
                 }
             }
             .frame(width: UIScreen.main.bounds.width / 3.5, alignment: .trailing)
-            
+             
             Button(action: {
                 withAnimation(.linear(duration: 2.0)) {
                     vm.reloadData()
@@ -138,6 +147,9 @@ extension HomeView {
             ForEach(vm.allCoins) { coin in
                 CoinRowView(coin: coin, showHoldingsColumn: false)
                     .listRowInsets(.init(top: 10, leading: 0, bottom: 10, trailing: 10))
+                    .onTapGesture {
+                        segue(coin: coin)
+                    }
             }
         }
         .listStyle(PlainListStyle())
@@ -148,9 +160,17 @@ extension HomeView {
             ForEach(vm.portfolioCoins) { coin in
                 CoinRowView(coin: coin, showHoldingsColumn: true)
                     .listRowInsets(.init(top: 10, leading: 0, bottom: 10, trailing: 10))
+                    .onTapGesture {
+                        segue(coin: coin)
+                    }
             }
         }
         .listStyle(PlainListStyle())
+    }
+    
+    private func segue(coin: CoinModel) {
+        selectedCoin = coin
+        showDetailView.toggle()
     }
 }
 
