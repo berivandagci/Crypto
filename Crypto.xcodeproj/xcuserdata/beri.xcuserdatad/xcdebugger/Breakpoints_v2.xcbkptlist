@@ -18,6 +18,36 @@
             endingLineNumber = "94"
             landmarkName = "portfolioInputSection"
             landmarkType = "24">
+            <Locations>
+               <Location
+                  uuid = "1C49E5E6-751B-4860-91B0-169663F5F11F - 4464917bc7cd04f9"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; SwiftUI.TupleView&lt;(SwiftUI.HStack&lt;SwiftUI.TupleView&lt;(SwiftUI.Text, SwiftUI.Spacer, SwiftUI.Text)&gt;&gt;, SwiftUI.Divider, SwiftUI.HStack&lt;SwiftUI.TupleView&lt;(SwiftUI.Text, SwiftUI.Spacer, &lt;&lt;opaque return type of SwiftUI.View.keyboardType(__C.UIKeyboardType) -&gt; some&gt;&gt;.0)&gt;&gt;, SwiftUI.Divider, SwiftUI.HStack&lt;SwiftUI.TupleView&lt;(SwiftUI.Text, SwiftUI.Spacer, SwiftUI.Text)&gt;&gt;)&gt; in Crypto.PortfolioView.portfolioInputSection.getter : some"
+                  moduleName = "Crypto.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/beri/Desktop/iosapps/Crypto/Crypto/Core/Home/Views/PortfolioView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "94"
+                  endingLineNumber = "94">
+               </Location>
+               <Location
+                  uuid = "1C49E5E6-751B-4860-91B0-169663F5F11F - 4130e2af37c70de7"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; SwiftUI.TupleView&lt;(SwiftUI.Text, SwiftUI.Spacer, SwiftUI.Text)&gt; in closure #1 () -&gt; SwiftUI.TupleView&lt;(SwiftUI.HStack&lt;SwiftUI.TupleView&lt;(SwiftUI.Text, SwiftUI.Spacer, SwiftUI.Text)&gt;&gt;, SwiftUI.Divider, SwiftUI.HStack&lt;SwiftUI.TupleView&lt;(SwiftUI.Text, SwiftUI.Spacer, &lt;&lt;opaque return type of SwiftUI.View.keyboardType(__C.UIKeyboardType) -&gt; some&gt;&gt;.0)&gt;&gt;, SwiftUI.Divider, SwiftUI.HStack&lt;SwiftUI.TupleView&lt;(SwiftUI.Text, SwiftUI.Spacer, SwiftUI.Text)&gt;&gt;)&gt; in Crypto.PortfolioView.portfolioInputSection.getter : some"
+                  moduleName = "Crypto.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/beri/Desktop/iosapps/Crypto/Crypto/Core/Home/Views/PortfolioView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "94"
+                  endingLineNumber = "94">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

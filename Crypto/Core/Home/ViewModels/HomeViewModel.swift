@@ -33,25 +33,18 @@ class HomeViewModel: ObservableObject {
                 self?.allCoins = returnedCoins
             }
             .store(in: &cancellables)
-        
+         
         // updates portfolioCoins
         $allCoins
             .combineLatest(portfolioDataService.$savedEntities)
-            .map { (coinModels, portfolioEntities) -> [CoinModel] in
-                coinModels
-                    .compactMap { (coin) -> CoinModel? in
-                        guard let entity = portfolioEntities.first(where: { $0.coinID == coin.id }) else {
-                            return nil
-                        }
-                        return coin.updateHoldings(amount: entity.amount)
-                    }
-            }
+            .map(mapAllCoinsToPortfolioCoins)
             .sink { [weak self] (returnedCoins) in
                 self?.portfolioCoins = returnedCoins
             }
             .store(in: &cancellables)
          
         marketDataService.$marketData
+            .combineLatest($portfolioCoins)
             .map(mapGlobalMarketData)
             .sink { [weak self] (returnedStats) in
                 self?.statistics = returnedStats
@@ -64,10 +57,12 @@ class HomeViewModel: ObservableObject {
         portfolioDataService.updatePortfolio(coin: coin, amount: amount)
     }
     
+    
     func reloadData() {
         isLoading = true
         coinDataService.getCoins()
         marketDataService.getData()
+        HapticManager.notification(type: .success)
     }
     
     private func filterAndSortCoins(text: String, coins: [CoinModel], sort: SortOption) -> [CoinModel] {
@@ -103,9 +98,34 @@ class HomeViewModel: ObservableObject {
         }
     }
     
-    private func mapGlobalMarketData(marketDataModel: MarketDataModel?) -> [StatisticModel] {
-        var stats: [StatisticModel] = []
+    private func mapAllCoinsToPortfolioCoins(allCoins: [CoinModel], portfolioCoins: [PortfolioEntity]) -> [CoinModel] {
+        allCoins
+            .compactMap { (coin) -> CoinModel? in
+                guard let entity = portfolioCoins.first(where: { $0.coinID == coin.id }) else {
+                    return nil
+                }
+                return coin.updateHoldings(amount: entity.amount)
+            }
+    }
     
+    private func mapGlobalMarketData(marketDataModel: MarketDataModel?, portfolioCoins: [CoinModel]) -> [StatisticModel] {
+        var stats: [StatisticModel] = []
+         
+        let portfolioValue = portfolioCoins.map { (coin) -> Double in
+            return coin.currentHoldingsValue
+        }.reduce(0, +)
+        
+        let previousValue = portfolioCoins
+            .map { (coin) -> Double in
+                let currentValue = coin.currentHoldingsValue
+                let percentChange = (coin.priceChangePercentage24H ?? 0) / 100
+                let previousValue = currentValue / (1 + percentChange)
+                return previousValue
+            }
+            .reduce(0, +)
+
+        let percentageChange = previousValue == 0 ? 0 : ((portfolioValue - previousValue) / previousValue) * 100
+        
         guard let data = marketDataModel else {
             return stats
         }
@@ -113,7 +133,7 @@ class HomeViewModel: ObservableObject {
         let marketCap = StatisticModel(
             title: "Market Cap",
             value: data.marketCap,
-            percentageChange: data.marketCapChangePercentage24HUsd
+            percentageChange: data.marketCapChangePercentage24HUsd ?? 0.0
         )
          
         let volume = StatisticModel(
@@ -130,8 +150,8 @@ class HomeViewModel: ObservableObject {
          
         let portfolio = StatisticModel(
             title: "Portfolio Value",
-            value: "$0.00",
-            percentageChange: 0.0
+            value: portfolioValue.asCurrencyWith2Decimals(),
+            percentageChange: percentageChange
         )
          
         stats.append(contentsOf: [
@@ -144,6 +164,7 @@ class HomeViewModel: ObservableObject {
         return stats
     }
 }
+
 extension CoinModel {
     func updateHoldings(amount: Double) -> CoinModel {
         var coin = self
