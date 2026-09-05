@@ -36,8 +36,11 @@ class HomeViewModel: ObservableObject {
          
         // updates portfolioCoins
         $allCoins
-            .combineLatest(portfolioDataService.$savedEntities)
-            .map(mapAllCoinsToPortfolioCoins)
+            .combineLatest(portfolioDataService.$savedEntities, $sortOption)
+            .map { (coins, entities, sort) -> [CoinModel] in
+                let portfolioCoins = self.mapAllCoinsToPortfolioCoins(allCoins: coins, portfolioCoins: entities)
+                return self.sortPortfolioCoinsIfNeeded(coins: portfolioCoins, sort: sort)
+            }
             .sink { [weak self] (returnedCoins) in
                 self?.portfolioCoins = returnedCoins
             }
@@ -56,7 +59,6 @@ class HomeViewModel: ObservableObject {
     func updatePortfolio(coin: CoinModel, amount: Double) {
         portfolioDataService.updatePortfolio(coin: coin, amount: amount)
     }
-    
     
     func reloadData() {
         isLoading = true
@@ -95,6 +97,17 @@ class HomeViewModel: ObservableObject {
             coins.sort(by: { ($0.currentPrice ?? 0) > ($1.currentPrice ?? 0) })
         case .priceReversed:
             coins.sort(by: { ($0.currentPrice ?? 0) < ($1.currentPrice ?? 0) })
+        }
+    }
+    
+    private func sortPortfolioCoinsIfNeeded(coins: [CoinModel], sort: SortOption) -> [CoinModel] {
+        switch sort {
+        case .holdings:
+            return coins.sorted(by: { $0.currentHoldingsValue > $1.currentHoldingsValue })
+        case .holdingsReversed:
+            return coins.sorted(by: { $0.currentHoldingsValue < $1.currentHoldingsValue })
+        default:
+            return coins
         }
     }
     
