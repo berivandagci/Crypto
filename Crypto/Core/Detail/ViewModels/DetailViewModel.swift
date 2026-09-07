@@ -55,7 +55,7 @@ class DetailViewModel: ObservableObject {
     }
     
     private func createOverviewArray(coinModel: CoinModel) -> [StatisticModel] {
-        let price = coinModel.currentPrice.asCurrencyWith6Decimals()
+        let price = coinModel.currentPrice!.asCurrencyWith6Decimals()
         let pricePercentChange = coinModel.priceChangePercentage24H
         let priceStat = StatisticModel(title: "Current Price", value: price, percentageChange: pricePercentChange)
         
