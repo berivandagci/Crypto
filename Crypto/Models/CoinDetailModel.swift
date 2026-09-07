@@ -128,8 +128,3 @@ struct Links: Codable {
 struct Description: Codable {
     let en: String?
 }
-extension String {
-    var removingHTMLOccurances: String {
-        return self.replacingOccurrences(of: "<[^>]+>", with: "", options: .regularExpression, range: nil)
-    }
-}

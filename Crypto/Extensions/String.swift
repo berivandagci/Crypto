@@ -1,0 +1,15 @@
+//
+//  String.swift
+//  Crypto
+//
+//  Created by beri on 7.09.2026.
+//
+
+import Foundation
+extension String {
+    
+    
+    var removingHTMLOccurances: String {
+        return self.replacingOccurrences(of: "<[^>]+>", with: "", options: .regularExpression, range: nil)
+    }
+}
