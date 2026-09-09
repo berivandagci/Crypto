@@ -7,6 +7,7 @@ struct HomeView: View {
     @State private var showPortfolioView: Bool = false
     @State private var selectedCoin: CoinModel? = nil
     @State private var showDetailView: Bool = false
+    @State private var showSettingsView: Bool = false
     
     var body: some View {
         ZStack {
@@ -16,14 +17,17 @@ struct HomeView: View {
                     PortfolioView()
                         .environmentObject(vm)
                 })
-             
+                .sheet(isPresented: $showSettingsView, content: {
+                    SettingsView()
+                })
+            
             VStack {
                 homeHeader
                  
                 HomeStatsView(showPortfolio: $showPortfolio)
-                
+                 
                 SearchBarView(searchText: $vm.searchText)
-                
+                 
                 columnTitles
              
                 if !showPortfolio {
@@ -57,6 +61,8 @@ extension HomeView {
                 .onTapGesture {
                     if showPortfolio {
                         showPortfolioView.toggle()
+                    } else {
+                        showSettingsView.toggle()
                     }
                 }
                 .background(
