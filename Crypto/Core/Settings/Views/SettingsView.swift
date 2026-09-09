@@ -2,7 +2,7 @@ import SwiftUI
 
 struct SettingsView: View {
     
-    let githubURL = URL(string: "https://github.com/")!
+    let githubURL = URL(string: "https://github.com/berivandagci")!
     let coingeckoURL = URL(string: "https://www.coingecko.com")!
     
     var body: some View {
