@@ -1,3 +1,10 @@
+//
+//  HomeView.swift
+//  Crypto
+//
+//  Created by beri on 19.08.2026.
+//
+
 import SwiftUI
 
 struct HomeView: View {
@@ -18,19 +25,19 @@ struct HomeView: View {
                     PortfolioView()
                         .environmentObject(vm)
                 })
-            
+             
             // content layer
             VStack {
                 homeHeader
                 HomeStatsView(showPortfolio: $showPortfolio)
                 SearchBarView(searchText: $vm.searchText)
                 columnTitles
-                
+                 
                 if !showPortfolio {
                     allCoinsList
                         .transition(.move(edge: .leading))
                 }
-                
+                 
                 if showPortfolio {
                     ZStack(alignment: .top) {
                         if vm.portfolioCoins.isEmpty && vm.searchText.isEmpty {
@@ -41,19 +48,16 @@ struct HomeView: View {
                     }
                     .transition(.move(edge: .trailing))
                 }
-                
+                 
                 Spacer(minLength: 0)
             }
             .sheet(isPresented: $showSettingsView, content: {
                 SettingsView()
             })
         }
-        .background(
-            NavigationLink(
-                destination: DetailLoadingView(coin: $selectedCoin),
-                isActive: $showDetailView,
-                label: { EmptyView() })
-        )
+        .navigationDestination(isPresented: $showDetailView) {
+            DetailLoadingView(coin: $selectedCoin)
+        }
     }
 }
 
@@ -72,7 +76,7 @@ extension HomeView {
     private var homeHeader: some View {
         HStack {
             CircleButtonView(iconName: showPortfolio ? "plus" : "info")
-                .animation(.none)
+                .animation(.none, value: showPortfolio)
                 .onTapGesture {
                     if showPortfolio {
                         showPortfolioView.toggle()
@@ -88,7 +92,7 @@ extension HomeView {
                 .font(.headline)
                 .fontWeight(.heavy)
                 .foregroundColor(Color.theme.accent)
-                .animation(.none)
+                .animation(.none, value: showPortfolio)
             Spacer()
             CircleButtonView(iconName: "chevron.right")
                 .rotationEffect(Angle(degrees: showPortfolio ? 180 : 0))
@@ -100,7 +104,7 @@ extension HomeView {
         }
         .padding(.horizontal)
     }
-        
+          
     private var allCoinsList: some View {
         List {
             ForEach(vm.allCoins) { coin in
@@ -156,7 +160,7 @@ extension HomeView {
                     vm.sortOption = vm.sortOption == .rank ? .rankReversed : .rank
                 }
             }
-            
+             
             Spacer()
             if showPortfolio {
                 HStack(spacing: 4) {
@@ -183,7 +187,7 @@ extension HomeView {
                     vm.sortOption = vm.sortOption == .price ? .priceReversed : .price
                 }
             }
-            
+             
             Button(action: {
                 withAnimation(.linear(duration: 2.0)) {
                     vm.reloadData()
@@ -197,5 +201,4 @@ extension HomeView {
         .foregroundColor(Color.theme.secondaryText)
         .padding(.horizontal)
     }
-    
 }
